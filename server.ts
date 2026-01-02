@@ -41,9 +41,8 @@ app.post('/api/analyze', async (req, res) => {
     Odpowiedz w języku polskim, używając profesjonalnego, ale przystępnego tonu.`;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-5.1",
+      model: "gpt-4o-mini", // Switching to a faster, more widely available model
       messages: [{ role: "user", content: prompt }],
-      max_completion_tokens: 1500,
     });
 
     res.json({ analysis: response.choices[0].message.content });
@@ -61,7 +60,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const PORT = 5001; // Backend on 5001
+const PORT = 5001;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Backend server strictly listening on port ${PORT}`);
 });

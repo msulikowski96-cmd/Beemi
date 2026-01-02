@@ -70,13 +70,17 @@ const App = () => {
       console.log('Sending data to /api/analyze:', { ...data, bmi, bmr, tdee });
       const response = await fetch('/api/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({ ...data, bmi, bmr, tdee }),
       });
       
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.error || 'Błąd serwera');
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        console.error('Non-JSON response received:', await response.text());
+        throw new Error('Serwer zwrócił nieprawidłowy format danych (HTML zamiast JSON).');
       }
       
       const result = await response.json();
@@ -252,7 +256,7 @@ const App = () => {
               <h2 className="font-semibold flex items-center gap-2">
                 <Brain size={20} /> Rekomendacje MetabolicAI
               </h2>
-              {aiAnalysis && <div className="text-xs bg-white/20 px-2 py-1 rounded">Model: GPT-5</div>}
+              {aiAnalysis && <div className="text-xs bg-white/20 px-2 py-1 rounded">Model: AI</div>}
             </div>
             <div className="p-6">
               {!aiAnalysis ? (

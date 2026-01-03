@@ -9,9 +9,17 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(express.json());
 
+// Obsługa klucza API dla Replit AI Proxy lub standardowego OpenAI (Vercel)
+const apiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+const baseURL = process.env.AI_INTEGRATIONS_OPENAI_BASE_URL || undefined; // Vercel używa standardowego URL
+
+if (!apiKey) {
+  console.warn("Brak klucza API OpenAI. Analiza AI nie będzie działać.");
+}
+
 const openai = new OpenAI({
-  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
-  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+  apiKey: apiKey,
+  baseURL: baseURL,
 });
 
 app.post('/api/analyze', async (req, res) => {

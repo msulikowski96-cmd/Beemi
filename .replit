@@ -48,5 +48,5 @@ externalPort = 5173
 [userenv]
 
 [userenv.shared]
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = "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"
 OPENROUTER_MODEL = "deepseek/deepseek-r1-0528:free"

@@ -9,9 +9,22 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(express.json());
 
+// AI Configuration - OpenRouter.ai only
+const apiKey = process.env.OPENROUTER_API_KEY;
+const baseURL = "https://openrouter.ai/api/v1";
+const model = "google/gemini-2.0-flash-exp:free";
+
+if (!apiKey) {
+  console.warn("Brak klucza OPENROUTER_API_KEY. Analiza AI nie będzie działać.");
+}
+
 const openai = new OpenAI({
-  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
-  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+  apiKey: apiKey,
+  baseURL: baseURL,
+  defaultHeaders: {
+    "HTTP-Referer": "https://replit.com",
+    "X-Title": "MetabolicAI",
+  }
 });
 
 app.post('/api/analyze', async (req, res) => {
@@ -40,7 +53,7 @@ app.post('/api/analyze', async (req, res) => {
     Odpowiedz w języku polskim, używając profesjonalnego, ale przystępnego tonu.`;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: model,
       messages: [{ role: "user", content: prompt }],
     });
 

@@ -49,4 +49,4 @@ externalPort = 5173
 
 [userenv.shared]
 OPENROUTER_API_KEY = "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"
-OPENROUTER_MODEL = "qwen/qwen3-4b:free"
+OPENROUTER_MODEL = "deepseek/deepseek-r1-0528:free"
